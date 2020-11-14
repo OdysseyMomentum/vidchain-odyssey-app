@@ -1,5 +1,6 @@
 import {Linking, Platform} from 'react-native';
 import Toast from 'react-native-simple-toast';
+import * as siopDidAuth from "@validatedid/did-auth";
 import {DidAuthVerifyOpts, DidAuthResponsePayload} from '../dtos/DidAuthTypes';
 import * as vidchain from '../apis/vidchain';
 import * as config from '../config/config';
@@ -19,11 +20,11 @@ const validateAuthResponse = async (authResponseToken: string) => {
     },
     nonce: (payload as DidAuthResponsePayload).nonce,
   };
-  // const validationResponse = await verifyDidAuthResponse(
-  //   authResponseToken,
-  //   optsVerify
-  // );
-  // return validationResponse;
+  const validationResponse = await siopDidAuth.verifyDidAuthResponse(
+    authResponseToken,
+    optsVerify
+  );
+  return validationResponse;
 }
 
 
