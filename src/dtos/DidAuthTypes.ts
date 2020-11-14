@@ -22,6 +22,9 @@ export enum DidAuthKeyAlgorithm {
     RS256 = "RS256",
     EDDSA = "EdDSA",
   }
+  export enum UrlEncodingFormat {
+    FORM_URL_ENCODED = "application/x-www-form-urlencoded",
+  }
 
 export interface DidAuthRequestOpts {
     oidpUri?: string;
@@ -63,4 +66,13 @@ export interface ExternalSignature {
 export interface RegistrationType extends RequestObjectBy {
     id_token_encrypted_response_alg?: EncKeyAlgorithm;
     id_token_encrypted_response_enc?: EncSymmetricAlgorithmCode;
+}
+
+export type UriDidAuth = {
+    urlEncoded: string;
+    encoding: UrlEncodingFormat;
+};
+
+export interface UriRequest extends UriDidAuth {
+    jwt?: string;
 }

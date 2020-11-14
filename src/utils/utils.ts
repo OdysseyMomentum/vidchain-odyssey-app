@@ -1,5 +1,4 @@
 import {decode as atob, encode} from 'base-64';
-import { ethers, utils } from "ethers";
 import {WALLET_ERRORS} from './handleApiResponse';
 import {decodeJWT} from './jwtHandler';
 import {IEnterpriseAuthZToken} from '../dtos/Tokens';
@@ -28,16 +27,11 @@ function strB64dec(input) {
     }
   }
 
-  function getState(): string {
-    const randomNumber = ethers.BigNumber.from(utils.randomBytes(12));
-    return utils.hexlify(randomNumber).replace("0x", "");
-  }
-
   function getEnterpriseDID(token: string): string {
     const { payload } = decodeJWT(token);
     return (payload as IEnterpriseAuthZToken).did;
   }
 
 
-export {strB64dec, strB64enc, getState, getEnterpriseDID}
+export {strB64dec, strB64enc, getEnterpriseDID}
   
