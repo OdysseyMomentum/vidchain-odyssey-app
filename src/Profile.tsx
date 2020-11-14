@@ -13,6 +13,7 @@ interface Props {
 }
 interface State {
   did: string;
+  credential: any
 }
 
 class Profile extends Component<Props, State> {
@@ -20,6 +21,7 @@ class Profile extends Component<Props, State> {
     super(props);
     this.state = {
       did: "",
+      credential: {}
     };
   }
 
@@ -28,11 +30,18 @@ class Profile extends Component<Props, State> {
     const {response} = route.params;
     //Validate the id token
     const validationResponse: siopDidAuth.DidAuthTypes.DidAuthValidationResponse = await validateAuthResponse(response);
-    if(validationResponse){
-      console.log(true);
-      // this.setState({
-      //   did: validationResponse.payload.did
-      // });
+    console.log(validationResponse.signatureValidation);
+
+    if(validationResponse.signatureValidation){
+      const payload: siopDidAuth.DidAuthTypes.DidAuthResponsePayload = validationResponse.payload as siopDidAuth.DidAuthTypes.DidAuthResponsePayload;
+      const did = payload.did;
+      const verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential = payload.vp.verifiableCredential[0] as siopDidAuth.OidcSsi.VerifiableCredential;
+      const credential: siopDidAuth.OidcSsi.CredentialSubject = verifiableCredential.credentialSubject;
+
+      this.setState({
+        did: did,
+        credential: credential
+      });
     }
   }
   render(){
@@ -40,8 +49,10 @@ class Profile extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Odyssey Profile</Text>
-        <Text style={styles.text}>{}</Text>
+        <Text style={styles.text}>Hi {did}</Text>
+        <Text style={styles.text}>You have just received a credential.</Text>
         <Image source={imageLogo} style={styles.logo} /> 
+
       </View> 
     );
   }

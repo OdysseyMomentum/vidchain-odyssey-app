@@ -1,4 +1,5 @@
 import React, { useEffect, Component } from 'react';
+import queryString from 'query-string';
 import { View, Text, Button } from 'native-base';
 import {StyleSheet, Image, Linking, Platform} from 'react-native';
 import colors from './config/colors';
@@ -14,14 +15,14 @@ interface State {}
 
 class Home extends Component<Props, State> {
   componentDidMount() {
-    Linking.addEventListener('url', this.handleDeepLinks);
+    Linking.addEventListener('url', this.handleOpenURL);
   };
   componentWillUnmount() {
     Linking.removeEventListener('url', this.handleDeepLinks);
   };
 
   handleDeepLinks = async () => {
-    console.log("handle");
+    console.log("hnadle");
       if (Platform.OS === 'android') {
           Linking.getInitialURL().then(async (url) => {
             await this.handleOpenURL({url});
@@ -33,9 +34,11 @@ class Home extends Component<Props, State> {
   
   handleOpenURL = async (event) => {
     const {navigation} = this.props;
-      if (event.url !== null && isOpenIdRequest(event.url)) {
-        const splitUrl = event.url.split("#");
-        const responseData = JSON.parse(splitUrl[1]);
+    console.log(event.url);
+    const uriResponseDecoded = decodeURIComponent(event.url);
+      if (event.url !== null && isOpenIdRequest(uriResponseDecoded)) {
+        const splitUrl = uriResponseDecoded.split("#");
+        const responseData = queryString.parse(splitUrl[1]);
         const authResponseToken = responseData.id_token as string;
         navigation.navigate('Profile', {
           response: authResponseToken

@@ -44,7 +44,7 @@ const generateJwtRequest = async (): Promise<UriRequest> => {
           type: ObjectPassedBy.VALUE,
         },
         signatureType: {
-          signatureUri: `${config.API_URL}/api/v1/signatures`,
+          signatureUri: `${config.API_URL}/signatures`,
           did: did,
           authZToken: jwt,
           kid: `${did}#key-1`,
@@ -57,9 +57,7 @@ const generateJwtRequest = async (): Promise<UriRequest> => {
         responseContext:DidAuthResponseContext.RP,
         claims: claim,
       };
-      console.log("to login");
     const uriRequest: UriRequest = await siopDidAuth.createUriRequest(requestOpts);
-    console.log(uriRequest);
     return uriRequest;
 }
 
