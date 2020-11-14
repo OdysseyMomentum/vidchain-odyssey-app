@@ -32,6 +32,14 @@ function strB64dec(input) {
     return (payload as IEnterpriseAuthZToken).did;
   }
 
+  function isOpenIdRequest(input: string): boolean {
+    try {
+      return input.startsWith('odysseyvidchain://did-auth');
+    } catch (error) {
+      return false;
+    }
+  }
 
-export {strB64dec, strB64enc, getEnterpriseDID}
+
+export {strB64dec, strB64enc, getEnterpriseDID, isOpenIdRequest}
   

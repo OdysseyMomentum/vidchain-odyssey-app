@@ -1,4 +1,7 @@
 import { OidcClaim } from "./oidcSsi";
+import {VerifiablePresentation} from "./VP"
+import {JWTClaims} from './JWT';
+import {JWKECKey} from './JWK';
 
 export enum EncKeyAlgorithm {
     ECDH_ES = "ECDH-ES", // default
@@ -15,6 +18,9 @@ export enum DidAuthResponseContext {
     RP = "rp", // default
     WALLET = "wallet",
 }
+export enum DidAuthResponseIss {
+    SELF_ISSUE = 'https://self-issued.me',
+  }
 
 export enum DidAuthKeyAlgorithm {
     ES256KR = "ES256K-R", // default
@@ -76,3 +82,29 @@ export type UriDidAuth = {
 export interface UriRequest extends UriDidAuth {
     jwt?: string;
 }
+
+export interface DidAuthVerifyOpts {
+    verificationType: InternalVerification | ExternalVerification;
+    nonce?: string;
+  }
+export interface InternalVerification {
+    registry: string;
+    rpcUrl: string;
+}
+
+export interface ExternalVerification {
+    verifyUri: string; // url to call to verify the id_token signature
+    authZToken?: string; // Optional: bearer token to use to the call
+}
+
+export interface DidAuthResponsePayload extends JWTClaims {
+    iss: DidAuthResponseIss.SELF_ISSUE;
+    sub: string;
+    aud: string;
+    exp?: number;
+    iat?: number;
+    nonce: string;
+    sub_jwk: JWKECKey;
+    did: string;
+    vp?: VerifiablePresentation;
+  }

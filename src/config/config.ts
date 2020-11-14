@@ -1,7 +1,7 @@
 
 const API_URL = "https://dev.vidchain.net/api/v1";
-const CALLBACK_URL = "odysseyapp://did-auth"
-const REDIRECT_URI = "odysseyapp://did-auth"
+const CALLBACK_URL = "odysseyvidchain://did-auth";
+const REDIRECT_URI = "odysseyvidchain://did-auth";
 const IDENTITY_PROVIDER = "vidchain://did-auth";
 
 
