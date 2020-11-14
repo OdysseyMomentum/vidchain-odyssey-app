@@ -1,11 +1,4 @@
-import {Resolver} from 'did-resolver';
 
-export interface JWTVerifyOptions {
-  auth?: boolean;
-  audience?: string;
-  callbackUrl?: string;
-  resolver: Resolver;
-}
 
 export interface JWTHeader {
   typ: 'JWT';
