@@ -1,20 +1,20 @@
 import React from 'react';
 import { View, Text, Image, Button } from 'native-base';
-import {StyleSheet, Linking} from 'react-native';
+import {StyleSheet} from 'react-native';
 import colors from './config/colors';
+import {signInWithVidchain} from './core/VidchainSignIn';
 
 const imageBackground= require('../assets/images/background.jpeg');
+
 function Home({ navigation }) {
     return (
       <View style={styles.container}>
           {/* <Image source={imageBackground} style={styles.backgroundImage} /> */}
         <Text>Odyssey</Text>
-        <Button style={styles.button} onPress={() => this.continue()}>
+        <Button style={styles.button} onPress={() => signInWithVidchain()}>
             <Text style={styles.textButton}>SignIn with Vidchain</Text>
         </Button>
-      </View>
-    
-        
+      </View> 
     );
 }
 
