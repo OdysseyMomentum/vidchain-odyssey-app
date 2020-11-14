@@ -2,6 +2,7 @@
 const API_URL = "https://dev.vidchain.net/api/v1";
 const CALLBACK_URL = "odysseyapp://did-auth"
 const REDIRECT_URI = "odysseyapp://did-auth"
+const IDENTITY_PROVIDER = "vidchain://did-auth";
 
 
 //Legal Entity
@@ -29,5 +30,6 @@ export {
   scope,
   API_URL,
   DID,
-  REDIRECT_URI
+  REDIRECT_URI,
+  IDENTITY_PROVIDER
 };
