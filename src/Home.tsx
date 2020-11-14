@@ -1,29 +1,39 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'native-base';
-import {StyleSheet} from 'react-native';
+import { View, Text, Button } from 'native-base';
+import {StyleSheet, Image} from 'react-native';
 import colors from './config/colors';
 import {signInWithVidchain} from './core/VidchainSignIn';
+import {handleDeepLinks} from './core/ManageDeepLinks';
 
-const imageBackground= require('../assets/images/background.jpeg');
+const imageLogo = require('../assets/images/logo.jpg');
 
 function Home({ navigation }) {
+    handleDeepLinks();
     return (
       <View style={styles.container}>
-          {/* <Image source={imageBackground} style={styles.backgroundImage} /> */}
-        <Text>Odyssey</Text>
+        <Text style={styles.text}>Odyssey</Text>
+        <Image source={imageLogo} style={styles.logo} />
         <Button style={styles.button} onPress={() => signInWithVidchain()}>
-            <Text style={styles.textButton}>SignIn with Vidchain</Text>
+            <Text style={styles.textButton}>Sign In with Vidchain</Text>
         </Button>
       </View> 
     );
 }
 
 const styles = StyleSheet.create({
-    backgroundImage: {
-      flex: 1,
-      resizeMode: 'stretch', // or 'stretch'
+    logo: {
+      
     },
-    container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    container: { 
+      flex: 1, 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: colors.black
+   },
+   text: {
+      color: colors.white,
+      fontSize: 25
+   },
     button: {
         backgroundColor: colors.primary,
         color: colors.white,
