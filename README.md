@@ -1,62 +1,96 @@
-# :space_invader: React Native Template TypeScript
+# VIDCHAIN Odyssey
 
-<p>
-  <a href="https://travis-ci.org/react-native-community/react-native-template-typescript">
-    <img alt="Build Status" src="https://img.shields.io/travis/react-native-community/react-native-template-typescript.svg" target="_blank" />
-  </a>
-  <a href="https://github.com/react-native-community/react-native-template-typescript#readme">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
-  </a>
-  <a href="https://github.com/react-native-community/react-native-template-typescript/graphs/commit-activity">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
-  </a>
-  <a href="https://github.com/react-native-community/react-native-template-typescript/blob/master/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
-  </a>
-</p>
+> Mobile App to demo the flow app to app and make the integration with our SSI solution easier.
 
-> Clean and minimalist React Native template for a quick start with TypeScript.
+Read the guide we have prepared for the integration with the library @validatedid/did-auth
 
-## :star: Features
+https://validatedid.github.io/vidchain-doc/#/did-auth
 
-- Elegant usage directly within the [React Native CLI](https://github.com/react-native-community/cli)
-- Consistent with the default React Native template
-- Minimal additional dependencies
+And in the public library need for the DID auth process:
+https://www.npmjs.com/package/@validatedid/did-auth
 
-## :arrow_forward: Usage
+## Table of Contents
 
-```sh
-npx react-native init MyApp --template react-native-template-typescript
-```
+1. [Getting started](#Getting)
+2. [Running](#Running)
+3. [Testing](#Testing)
+4. [Build Troubleshooting](#BuildTroubleshooting)
+5. [Licensing](#Licensing)
 
-### Usage with older versions of React Native
+### Getting started
 
-#### e.g. `react-native@0.62.x`
+- React Native
+- Jest for testing
+
+Clone the repository and move to the project directory
 
 ```sh
-npx react-native init MyApp --template react-native-template-typescript@6.4.*
+git clone https://github.com/validatedid/vidchain-app.git
+cd vidchain-app
 ```
 
-See the below table to find out which version of the template to use.
+The code is built using React-Native and running code locally requires a Mac or Linux OS.
 
-#### React Native <=> Template Version
+- Install [Node.js](https://nodejs.org) **version 10 (latest stable) and yarn@1 (latest)**
 
-| React Native  	| Template  	|
-|---	            |---	        |
-| 0.63  	        | 6.5.*       |
-| 0.62  	        | 6.4.*       |
-| 0.61  	        | 6.3.*       |
-| 0.60  	        | 6.2.*       |
+- Install the shared React Native dependencies (`React Native CLI`, _not_ `Expo CLI`)
 
-### Note on the legacy CLI
-There seems to be quite some confusion about the legacy CLI. This template only works with the new CLI. Make sure you have uninstalled the legacy `react-native-cli` first (`npm uninstall -g react-native-cli`), for the below command to work. If you wish to not use `npx`, you can also install the new CLI globally (`npm i -g @react-native-community/cli` or `yarn global add @react-native-community/cli`).
+  - [macOS](https://facebook.github.io/react-native/docs/getting-started.html#installing-dependencies-1)
+  - [Linux](https://facebook.github.io/react-native/docs/getting-started.html#installing-dependencies-2)
 
-Further information can be found here: https://github.com/react-native-community/cli#about
+- Install [cocoapods](https://guides.cocoapods.org/using/getting-started.html) by running:
 
-## :computer: Contributing
+```bash
+sudo gem install cocoapods
+```
 
-Contributions are very welcome. Please check out the [contributing document](CONTRIBUTING.md).
+Install the required libraries and packages dependencies
 
-## :bookmark: License
+```sh
+npm install
+cd ios && pod install && cd .. # install pods for iOS
+```
 
-This project is [MIT](LICENSE) licensed.
+If there are errors with the crypto library in React when install the npm install, is necessary to install node core shims and recursively with rn-nodeify:
+
+```sh
+./node_modules/.bin/rn-nodeify --hack --install
+```
+
+
+
+## Running
+
+#### Android
+
+- Install the Android SDK, via [Android Studio](https://developer.android.com/studio).
+
+```sh
+npm run android
+
+```
+
+This command starts the app in the device if you have it plugged or otherwise it launches an emulator.
+
+#### iOS
+
+- Install the iOS dependencies
+  - [React Native Getting Started - iOS](https://facebook.github.io/react-native/docs/getting-started.html#installing-dependencies-1) _(React Native CLI Quickstart -> [your OS] -> iOS)_
+    - You do **not** need CocoaPods
+
+```sh
+npm run ios
+
+```
+
+This command starts the app in the device if you have it plugged or otherwise it launches an emulator.
+
+## Testing
+
+Run the tests
+
+```sh
+npm run test
+```
+
+## License
