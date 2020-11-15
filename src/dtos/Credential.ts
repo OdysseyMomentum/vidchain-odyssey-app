@@ -16,8 +16,10 @@ export interface CredentialId {
     id: string;
     documentNumber: string;
     documentType: string;
-    name: string;
-    surname: string;
+    name?: string;
+    firstName?: string;
+    surname?: string;
+    lastName?: string;
     fullName: string;
     nationality: string;
     stateIssuer: string;
@@ -25,7 +27,8 @@ export interface CredentialId {
     dateOfExpiry: string;
     dateOfBirth: string;
     placeOfBirth: string;
-    sex: string;
+    sex?: string;
+    gender?: string;
     personalNumber: string;
   }
   

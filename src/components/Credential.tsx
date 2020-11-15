@@ -45,8 +45,8 @@ class Credential extends React.Component<Props, State> {
     const entity = await getEntityByDID(issuerDid);
 
     this.setState({
-      credentialId:  credential.firstName ? credential as CredentialId : null,
-      credentialKyc: credential.firstName ? null : credential as verifiableKYC,
+      credentialId:  credential.issuingAuthority ? null: credential as CredentialId,
+      credentialKyc: credential.issuingAuthority ? credential as verifiableKYC : null,
       entity: entity,
     });
   }
@@ -57,7 +57,7 @@ class Credential extends React.Component<Props, State> {
   }
 
   render() {
-    const {entity, credentialId, credentialKyc, isCredentialId} = this.state;
+    const {entity, credentialId, credentialKyc} = this.state;
     return (
         <View style={styles.container}>
             <CardItem style={styles.headerNotification}>
@@ -151,13 +151,13 @@ class Credential extends React.Component<Props, State> {
                   <Text style={styles.text}>Name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credentialKyc.name}</Text>
+                  <Text>{credentialKyc.name || credentialKyc.firstName}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Last name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credentialKyc.surname}</Text>
+                  <Text>{credentialKyc.surname || credentialKyc.lastName}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Full name</Text>
@@ -205,7 +205,7 @@ class Credential extends React.Component<Props, State> {
                   <Text style={styles.text}>Gender</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credentialKyc.sex}</Text>
+                  <Text>{credentialKyc.sex || credentialKyc.gender}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Document Number</Text>
