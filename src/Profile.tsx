@@ -14,7 +14,8 @@ interface Props {
 interface State {
   did: string;
   issuerDid: string;
-  credential: any
+  credential: any;
+  verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential;
 }
 
 class Profile extends Component<Props, State> {
@@ -23,7 +24,8 @@ class Profile extends Component<Props, State> {
     this.state = {
       did: "",
       issuerDid: "",
-      credential: {}
+      credential: {},
+      verifiableCredential: {} as siopDidAuth.OidcSsi.VerifiableCredential
     };
   }
 
@@ -48,18 +50,20 @@ class Profile extends Component<Props, State> {
 
       this.setState({
         did: did,
+        verifiableCredential: verifiableCredential,
         credential: credential,
-        issuerDid: issuer
+        issuerDid: issuer,
       });
     }
   }
 
   seeCredential(){
     const {navigation} = this.props;
-    const {credential, issuerDid} = this.state;
+    const {credential, issuerDid, verifiableCredential} = this.state;
     navigation.navigate('Credential', {
       credential: credential,
-      issuerDid: issuerDid
+      issuerDid: issuerDid,
+      verifiableCredential: verifiableCredential
     });
   }
 

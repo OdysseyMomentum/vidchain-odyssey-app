@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {View, Text, ListItem, List, Separator, Body, CardItem} from 'native-base';
+import * as siopDidAuth from "@validatedid/did-auth";
+import {View, Text, ListItem, List, Separator, Body, CardItem, Right, Left, Button} from 'native-base';
 import colors from '../config/colors';
 import {CredentialId, verifiableKYC} from '../dtos/Credential';
 import {Entity} from '../dtos/Entity';
@@ -16,7 +17,7 @@ type State = {
   entity: Entity;
   credentialId: CredentialId;
   credentialKyc: verifiableKYC;
-  isCredentialId: boolean;
+  verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential;
 }
 
 const imageDefault = require('../../assets/images/validated_white.png');
@@ -34,13 +35,13 @@ class Credential extends React.Component<Props, State> {
       },
       credentialId: {} as CredentialId,
       credentialKyc: {} as verifiableKYC,
-      isCredentialId: false
+      verifiableCredential: {} as siopDidAuth.OidcSsi.VerifiableCredential
     }
   }
 
   async componentDidMount(){
     const {route} = this.props;
-    const {credential, issuerDid} = route.params;
+    const {credential, issuerDid, verifiableCredential} = route.params;
 
     const entity = await getEntityByDID(issuerDid);
 
@@ -48,12 +49,21 @@ class Credential extends React.Component<Props, State> {
       credentialId:  credential.issuingAuthority ? null: credential as CredentialId,
       credentialKyc: credential.issuingAuthority ? credential as verifiableKYC : null,
       entity: entity,
+      verifiableCredential: verifiableCredential
     });
   }
 
   goBack() {
     const {navigation} = this.props;
     navigation.navigate('Home');
+  }
+
+  sign() {
+
+  }
+  showProof(){
+    const {verifiableCredential} = this.state;
+    console.log(verifiableCredential)
   }
 
   render() {
@@ -222,6 +232,22 @@ class Credential extends React.Component<Props, State> {
               </List>
               ) }
               </ScrollView> 
+              <CardItem>
+              <Left>
+                  <Button style={styles.button} onPress={() => this.showProof()}>
+                    {/* <FontAwesome5 style={styles.icon} name="chevron-left" /> */}
+                    <Text style={styles.textButton}>Show Proof</Text>
+                  </Button>
+              </Left>
+              <Right>
+                  <Button
+                    style={styles.button}
+                    onPress={() => this.sign()}>
+                    {/* <FontAwesome5 style={styles.icon} name="check" /> */}
+                    <Text style={styles.textButton}>eIdas Signature</Text>
+                  </Button>
+              </Right>
+            </CardItem>
               </View>  
     );
             }
@@ -256,6 +282,16 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 25,
     marginRight: '2%',
+  },
+  button: {
+    backgroundColor: colors.primary,
+    color: colors.white,
+    paddingLeft: '5%',
+    borderRadius: 10,
+  },
+  textButton: {
+    color: colors.white,
+    fontFamily: 'TTNorms-Regular',
   },
   
     
