@@ -62,8 +62,11 @@ class Credential extends React.Component<Props, State> {
 
   }
   showProof(){
+    const {navigation} = this.props;
     const {verifiableCredential} = this.state;
-    console.log(verifiableCredential)
+    navigation.navigate('DisplayJSON', {
+      verifiableCredential: verifiableCredential
+    });
   }
 
   render() {
@@ -244,7 +247,7 @@ class Credential extends React.Component<Props, State> {
                     style={styles.button}
                     onPress={() => this.sign()}>
                     {/* <FontAwesome5 style={styles.icon} name="check" /> */}
-                    <Text style={styles.textButton}>eIdas Signature</Text>
+                    <Text style={styles.textButton}>eidas Signature</Text>
                   </Button>
               </Right>
             </CardItem>
