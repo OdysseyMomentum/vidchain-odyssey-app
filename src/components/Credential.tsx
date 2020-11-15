@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, ListItem, List, Separator, Body, CardItem} from 'native-base';
 import colors from '../config/colors';
-import {CredentialId} from '../dtos/Credential';
+import {CredentialId, verifiableKYC} from '../dtos/Credential';
 import {Entity} from '../dtos/Entity';
 import getEntityByDID from './Entities';
 
@@ -15,7 +15,9 @@ type Props = {
 };
 type State = {
   entity: Entity;
-  credential: any;
+  credentialId: CredentialId;
+  credentialKyc: verifiableKYC;
+  isCredentialId: boolean;
 }
 
 const imageDefault = require('../../assets/images/validated_white.png');
@@ -31,7 +33,9 @@ class Credential extends React.Component<Props, State> {
         image: Image.resolveAssetSource(imageDefault).uri,
         icon: Image.resolveAssetSource(iconDefault).uri,
       },
-      credential: {}
+      credentialId: {} as CredentialId,
+      credentialKyc: {} as verifiableKYC,
+      isCredentialId: false
     }
   }
 
@@ -42,8 +46,9 @@ class Credential extends React.Component<Props, State> {
     const entity = await getEntityByDID(issuerDid);
 
     this.setState({
-      credential,
-      entity: entity
+      credentialId:  credential.firstName ? credential as CredentialId : null,
+      credentialKyc: credential.firstName ? null : credential as verifiableKYC,
+      entity: entity,
     });
   }
 
@@ -53,7 +58,7 @@ class Credential extends React.Component<Props, State> {
   }
 
   render() {
-    const {entity, credential} = this.state;
+    const {entity, credentialId, credentialKyc, isCredentialId} = this.state;
     return (
         <View style={styles.container}>
             <CardItem style={styles.headerNotification}>
@@ -70,93 +75,153 @@ class Credential extends React.Component<Props, State> {
                 Issued by: {entity.name}
               </Text>
             </View>
-            <ScrollView>         
+            <ScrollView>  
+            {credentialId && (     
             <List>
                 <Separator bordered>
                   <Text style={styles.text}>Decentralized Identifier</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.id}</Text>
+                  <Text>{credentialId.id}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.firstName}</Text>
+                  <Text>{credentialId.firstName}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Last name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.lastName}</Text>
-                </ListItem>
-                <Separator bordered>
-                  <Text style={styles.text}>Full name</Text>
-                </Separator>
-                <ListItem>
-                  <Text>{credential.fullName}</Text>
+                  <Text>{credentialId.lastName}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Date of Birth</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.dateOfBirth}</Text>
+                  <Text>{credentialId.dateOfBirth}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Place of Birth</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.placeOfBirth}</Text>
+                  <Text>{credentialId.placeOfBirth}</Text>
                 </ListItem>
                 <Separator bordered>
-                  <Text style={styles.text}>Nationality</Text>
+                  <Text style={styles.text}>Current Address</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.nationality}</Text>
+                  <Text>{credentialId.currentAddress}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>City</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialId.city}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>State</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialId.state}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Zip</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialId.zip}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Gender</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.gender}</Text>
+                  <Text>{credentialId.gender}</Text>
                 </ListItem>
+              </List>
+              ) }
+              {credentialKyc && (     
+            <List>
                 <Separator bordered>
-                  <Text style={styles.text}>Document Type</Text>
+                  <Text style={styles.text}>Decentralized Identifier</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.documentType}</Text>
+                  <Text>{credentialKyc.id}</Text>
                 </ListItem>
                 <Separator bordered>
-                  <Text style={styles.text}>Document Number</Text>
+                  <Text style={styles.text}>Name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.documentNumber}</Text>
+                  <Text>{credentialKyc.name}</Text>
                 </ListItem>
                 <Separator bordered>
-                  <Text style={styles.text}>Personal Number</Text>
+                  <Text style={styles.text}>Last name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.personalNumber}</Text>
+                  <Text>{credentialKyc.surname}</Text>
                 </ListItem>
                 <Separator bordered>
-                  <Text style={styles.text}>Date of Expiry</Text>
+                  <Text style={styles.text}>Full name</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.dateOfExpiry}</Text>
+                  <Text>{credentialKyc.fullName}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Date of Birth</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.dateOfBirth}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Place of Birth</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.placeOfBirth}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Nationality</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.nationality}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>State Issuer</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.stateIssuer}</Text>
+                  <Text>{credentialKyc.stateIssuer}</Text>
                 </ListItem>
                 <Separator bordered>
                   <Text style={styles.text}>Issuing Authority</Text>
                 </Separator>
                 <ListItem>
-                  <Text>{credential.issuingAuthority}</Text>
+                  <Text>{credentialKyc.issuingAuthority}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Date of Expiry</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.dateOfExpiry}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Gender</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.sex}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Document Number</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.documentNumber}</Text>
+                </ListItem>
+                <Separator bordered>
+                  <Text style={styles.text}>Document Type</Text>
+                </Separator>
+                <ListItem>
+                  <Text>{credentialKyc.documentType}</Text>
                 </ListItem>
               </List>
+              ) }
               </ScrollView> 
               </View>  
     );
