@@ -7,7 +7,6 @@ import {CredentialId, verifiableKYC} from '../dtos/Credential';
 import {Entity} from '../dtos/Entity';
 import getEntityByDID from './Entities';
 
-// const imageLogo = require('../../assets/images/logo.jpg');
 
 type Props = {
     navigation: any;

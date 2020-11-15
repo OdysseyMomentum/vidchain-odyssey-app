@@ -8,9 +8,8 @@ const iconDefault = require('../../assets/images/icon_notification.png');
  * Auxiliar function to return the image and the name of a particular DID
  */
 async function getEntityByDID(did): Promise<Entity> {
-    console.log("get entitt");
   const response = await vidchain.entityName(did);
-  console.log(response.success);
+
   if (response.success) {
     return {
       name: response.data.uid,

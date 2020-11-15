@@ -32,12 +32,16 @@ class Profile extends Component<Props, State> {
     const {response} = route.params;
     //Validate the id token
     const validationResponse: siopDidAuth.DidAuthTypes.DidAuthValidationResponse = await validateAuthResponse(response);
-    console.log(validationResponse.signatureValidation);
 
+
+    //If true the flow is done! you have the credential
     if(validationResponse.signatureValidation){
       const payload: siopDidAuth.DidAuthTypes.DidAuthResponsePayload = validationResponse.payload as siopDidAuth.DidAuthTypes.DidAuthResponsePayload;
+
+      //It tooks the elemnent 0 of the credential becasue in this flow we just ask for one credential, it could be multiple credentials here.
       const verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential = payload.vp.verifiableCredential[0] as siopDidAuth.OidcSsi.VerifiableCredential;
 
+      //Parsing the id token to get my did, the issuer DID and the credential Info
       const issuer: string = verifiableCredential.issuer;
       const credential: siopDidAuth.OidcSsi.CredentialSubject = verifiableCredential.credentialSubject;
       const did = payload.did;

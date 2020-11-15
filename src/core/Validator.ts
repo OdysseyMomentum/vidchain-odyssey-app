@@ -1,5 +1,3 @@
-import {Linking, Platform} from 'react-native';
-import Toast from 'react-native-simple-toast';
 import * as siopDidAuth from "@validatedid/did-auth";
 import {DidAuthVerifyOpts, DidAuthResponsePayload} from '../dtos/DidAuthTypes';
 import * as vidchain from '../apis/vidchain';
