@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Toast from 'react-native-simple-toast';
 import * as siopDidAuth from "@validatedid/did-auth";
 import {View, Text, ListItem, List, Separator, Body, CardItem, Right, Left, Button} from 'native-base';
 import colors from '../config/colors';
 import {CredentialId, verifiableKYC} from '../dtos/Credential';
 import {Entity} from '../dtos/Entity';
 import getEntityByDID from './Entities';
+import { SignPayload } from '../dtos/Eidas';
+import * as eidasBridge from '../apis/eidasBridge';
 
 
 type Props = {
@@ -18,6 +20,7 @@ type State = {
   credentialId: CredentialId;
   credentialKyc: verifiableKYC;
   verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential;
+  issuerDid: string;
 }
 
 const imageDefault = require('../../assets/images/validated_white.png');
@@ -35,7 +38,8 @@ class Credential extends React.Component<Props, State> {
       },
       credentialId: {} as CredentialId,
       credentialKyc: {} as verifiableKYC,
-      verifiableCredential: {} as siopDidAuth.OidcSsi.VerifiableCredential
+      verifiableCredential: {} as siopDidAuth.OidcSsi.VerifiableCredential,
+      issuerDid: ""
     }
   }
 
@@ -49,7 +53,8 @@ class Credential extends React.Component<Props, State> {
       credentialId:  credential.issuingAuthority ? null: credential as CredentialId,
       credentialKyc: credential.issuingAuthority ? credential as verifiableKYC : null,
       entity: entity,
-      verifiableCredential: verifiableCredential
+      verifiableCredential: verifiableCredential,
+      issuerDid: issuerDid
     });
   }
 
@@ -58,14 +63,32 @@ class Credential extends React.Component<Props, State> {
     navigation.navigate('Home');
   }
 
-  sign() {
+  async sign() {
+    const {verifiableCredential, issuerDid} = this.state;
 
+    const signPayload: SignPayload = {
+      issuer: issuerDid,
+      type: "EidasSeal2019",
+      payload: verifiableCredential
+    }
+    const response = await eidasBridge.signature(signPayload);
+    if(response.success){
+      //console.log(JSON.stringify(response.data));
+      Toast.showWithGravity(
+        `Signature successfully`,
+        Toast.LONG,
+        Toast.CENTER,
+      );
+      this.setState({
+        verifiableCredential: response.data.vc,
+      });
+    }
   }
   showProof(){
     const {navigation} = this.props;
     const {verifiableCredential} = this.state;
     navigation.navigate('DisplayJSON', {
-      verifiableCredential: verifiableCredential
+      verifiableCredential: verifiableCredential.proof
     });
   }
 

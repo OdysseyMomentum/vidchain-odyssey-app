@@ -3,7 +3,7 @@ const API_URL = "https://dev.vidchain.net/api/v1";
 const CALLBACK_URL = "odysseyvidchain://did-auth";
 const REDIRECT_URI = "odysseyvidchain://did-auth";
 const IDENTITY_PROVIDER = "vidchain://did-auth";
-const EIDAS_URL = "https://api.vidchain.net/eidas-bridge/v1";
+const EIDAS_URL = "https://dev.vidchain.net/eidas-bridge/v1";
 
 
 //Legal Entity
