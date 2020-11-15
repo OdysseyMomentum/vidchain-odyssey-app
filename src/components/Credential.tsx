@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, ScrollView, Image} from 'react-native';
+import {StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, ListItem, List, Separator, Body, CardItem} from 'native-base';
 import colors from '../config/colors';
 import {CredentialId} from '../dtos/Credential';
@@ -8,20 +9,59 @@ import {Entity} from '../dtos/Entity';
 // const imageLogo = require('../../assets/images/logo.jpg');
 
 type Props = {
-    credential: any;
-    entity: any;
+    navigation: any;
+    route: any;
 };
+type State = {
+  entity: Entity;
+  credential: any;
+}
 
-const Credential = (props: Props) => {
-    const {credential, entity} = props;
+const imageDefault = require('../../assets/images/validated_white.png');
+const iconDefault = require('../../assets/images/icon_notification.png');
+
+class Credential extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      entity: {
+        name: 'Validated ID',
+        image: Image.resolveAssetSource(imageDefault).uri,
+        icon: Image.resolveAssetSource(iconDefault).uri,
+      },
+      credential: {}
+    }
+  }
+
+  componentDidMount(){
+    const {route} = this.props;
+    const {credential} = route.params;
+    this.setState({credential: credential});
+  }
+
+  goBack() {
+    const {navigation} = this.props;
+    navigation.navigate('Home');
+  }
+
+  render() {
+    const {entity, credential} = this.state;
     return (
         <View style={styles.container}>
             <CardItem style={styles.headerNotification}>
             <Body>
+            {/* <TouchableOpacity onPress={() => this.goBack()}>
+                <FontAwesome5
+                  onPress={() => this.goBack()}
+                  style={styles.icon}
+                  name="chevron-left"
+                />
+              </TouchableOpacity> */}
               <Image
                 resizeMode="contain"
-                source={entity.image}
-                style={styles.imageHeaderJobs}
+                source={{uri: entity.image}}
+                style={styles.imageHeader}
               />
             </Body>
           </CardItem>
@@ -123,9 +163,40 @@ const Credential = (props: Props) => {
               </ScrollView> 
               </View>  
     );
+            }
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  headerNotification: {
+    backgroundColor: colors.primary,
+  },
+  text: {
+    color: colors.black,
+    fontSize: 14,
+    fontFamily: 'TTNorms-Bold',
+  },
+  imageHeader: {
+    alignSelf: 'center',
+    width: 120,
+    height: 120,
+  },
+  titleBehindHeader: {
+    color: colors.primary,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'TTNorms-Regular',
+  },
+  icon: {
+    color: colors.white,
+    fontSize: 25,
+    marginRight: '2%',
+  },
+  
     
   });
 

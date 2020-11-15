@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text } from 'native-base';
+import { View, Text, Button } from 'native-base';
 import {StyleSheet, Image} from 'react-native';
 import * as siopDidAuth from "@validatedid/did-auth";
 import colors from './config/colors';
@@ -44,15 +44,26 @@ class Profile extends Component<Props, State> {
       });
     }
   }
+
+  seeCredential(){
+    const {navigation} = this.props;
+    const {credential} = this.state;
+    navigation.navigate('Credential', {
+      credential: credential
+    });
+  }
+
   render(){
-    const {did} = this.state;
+    const {did, credential} = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Odyssey Profile</Text>
-        <Text style={styles.text}>Hi {did}</Text>
-        <Text style={styles.text}>You have just received a credential.</Text>
+        <Text style={styles.title}>Your Odyssey Profile</Text>
+        <Text style={styles.text}>Hi {credential.firstName}</Text>
         <Image source={imageLogo} style={styles.logo} /> 
-
+        <Text style={styles.text}>You have just received a credential.</Text>
+        <Button style={styles.button} onPress={() => this.seeCredential()}>
+            <Text style={styles.textButton}>See the credential</Text>
+        </Button>
       </View> 
     );
   }
@@ -68,10 +79,27 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       backgroundColor: colors.black
    },
-   text: {
+   title: {
       color: colors.white,
       fontSize: 25
    },
+   text: {
+    color: colors.white,
+    fontSize: 15
+ },
+   button: {
+    backgroundColor: colors.primary,
+    color: colors.white,
+    alignSelf: 'center',
+    textAlign: 'center',
+    padding: 10,
+    borderRadius: 10,
+  },
+  textButton: {
+    color: colors.white,
+    alignSelf: 'center',
+    fontFamily: 'TTNorms-Regular',
+  },
   });
 
 export default Profile;

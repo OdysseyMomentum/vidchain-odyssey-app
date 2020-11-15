@@ -34,7 +34,7 @@ class Home extends Component<Props, State> {
   
   handleOpenURL = async (event) => {
     const {navigation} = this.props;
-    console.log(event.url);
+    // console.log(event.url);
     const uriResponseDecoded = decodeURIComponent(event.url);
       if (event.url !== null && isOpenIdRequest(uriResponseDecoded)) {
         const splitUrl = uriResponseDecoded.split("#");
