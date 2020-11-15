@@ -13,6 +13,7 @@ interface Props {
 }
 interface State {
   did: string;
+  issuerDid: string;
   credential: any
 }
 
@@ -21,6 +22,7 @@ class Profile extends Component<Props, State> {
     super(props);
     this.state = {
       did: "",
+      issuerDid: "",
       credential: {}
     };
   }
@@ -34,22 +36,26 @@ class Profile extends Component<Props, State> {
 
     if(validationResponse.signatureValidation){
       const payload: siopDidAuth.DidAuthTypes.DidAuthResponsePayload = validationResponse.payload as siopDidAuth.DidAuthTypes.DidAuthResponsePayload;
-      const did = payload.did;
       const verifiableCredential: siopDidAuth.OidcSsi.VerifiableCredential = payload.vp.verifiableCredential[0] as siopDidAuth.OidcSsi.VerifiableCredential;
+
+      const issuer: string = verifiableCredential.issuer;
       const credential: siopDidAuth.OidcSsi.CredentialSubject = verifiableCredential.credentialSubject;
+      const did = payload.did;
 
       this.setState({
         did: did,
-        credential: credential
+        credential: credential,
+        issuerDid: issuer
       });
     }
   }
 
   seeCredential(){
     const {navigation} = this.props;
-    const {credential} = this.state;
+    const {credential, issuerDid} = this.state;
     navigation.navigate('Credential', {
-      credential: credential
+      credential: credential,
+      issuerDid: issuerDid
     });
   }
 

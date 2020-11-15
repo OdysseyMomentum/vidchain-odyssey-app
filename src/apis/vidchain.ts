@@ -18,4 +18,23 @@ async function getAuthzToken() {
   }
 
 
-export { getAuthzToken };
+  async function entityName(did: String) {
+    const token = await getAuthzToken();
+    const authorization = {
+      headers: {
+        Authorization: `Bearer ${token.data.accessToken}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${config.API_URL}/legal-entities?did=${did}`,
+        authorization,
+      );
+      return handleSuccess(response);
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+
+export { getAuthzToken, entityName };

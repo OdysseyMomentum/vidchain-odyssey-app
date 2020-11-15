@@ -5,6 +5,7 @@ import {View, Text, ListItem, List, Separator, Body, CardItem} from 'native-base
 import colors from '../config/colors';
 import {CredentialId} from '../dtos/Credential';
 import {Entity} from '../dtos/Entity';
+import getEntityByDID from './Entities';
 
 // const imageLogo = require('../../assets/images/logo.jpg');
 
@@ -34,10 +35,16 @@ class Credential extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     const {route} = this.props;
-    const {credential} = route.params;
-    this.setState({credential: credential});
+    const {credential, issuerDid} = route.params;
+
+    const entity = await getEntityByDID(issuerDid);
+
+    this.setState({
+      credential,
+      entity: entity
+    });
   }
 
   goBack() {
@@ -51,13 +58,6 @@ class Credential extends React.Component<Props, State> {
         <View style={styles.container}>
             <CardItem style={styles.headerNotification}>
             <Body>
-            {/* <TouchableOpacity onPress={() => this.goBack()}>
-                <FontAwesome5
-                  onPress={() => this.goBack()}
-                  style={styles.icon}
-                  name="chevron-left"
-                />
-              </TouchableOpacity> */}
               <Image
                 resizeMode="contain"
                 source={{uri: entity.image}}
@@ -69,9 +69,6 @@ class Credential extends React.Component<Props, State> {
               <Text style={styles.titleBehindHeader} note>
                 Issued by: {entity.name}
               </Text>
-              {/* <Text style={styles.titleBehindHeaderDID} note>
-                {credential.name}
-              </Text> */}
             </View>
             <ScrollView>         
             <List>
